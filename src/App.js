@@ -14,7 +14,7 @@ function App() {
     <div className="App">
       <Routes>
         {/* <PrivateRoute path="/" exact component={<Home />} /> */}
-        <Route path="/" element={
+        <Route path="/" exact element={
           <PrivateRoute>
           <Home />
           </PrivateRoute>
