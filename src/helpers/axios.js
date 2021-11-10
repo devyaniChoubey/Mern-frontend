@@ -1,11 +1,11 @@
 import axios from "axios";
-import {api} from '../urlConfig'
+import { api } from '../urlConfig'
 
-const axiosInstance = axios.instance({
-    baseURL : api
+const axiosInstance = axios.create({
+    baseURL: api
     // headers : {
     //     "Authorization": ""
     // }
-}) 
+})
 
 export default axiosInstance;
