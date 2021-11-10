@@ -2,14 +2,16 @@ import Layout from '../../components/Layout/index'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap';
 import Input from '../../components/UI/Input';
 import {login} from '../../actions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
+import { Navigate } from 'react-router';
 
 const Signin = (props) => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
+    const auth = useSelector(state => state.auth)
 
     const dispatch = useDispatch();
 
@@ -20,6 +22,11 @@ const Signin = (props) => {
             password
         }
         dispatch(login(user));
+        alert("loggedin")
+    }
+
+    if(auth.authenticate){
+        return <Navigate to={'/'}/>
     }
     
     return (

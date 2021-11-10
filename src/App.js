@@ -3,13 +3,13 @@ import {Route,Routes} from 'react-router-dom';
 import Home from './containers/Home';
 import Signin from './containers/Signin/index';
 import Signup from './containers/Signup';
-
+import PrivateRoute from './components/HOC/PrivateRoute'
 
 function App() {
   return(
     <div className="App">
        <Routes>
-        <Route path="/" element={<Home />} />
+        <PrivateRoute path="/" exact component={<Home />} />
         <Route path="/signin" element={<Signin/>} />
         <Route path="/signup" element={<Signup />} />
       </Routes>

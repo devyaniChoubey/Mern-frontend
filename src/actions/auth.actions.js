@@ -10,6 +10,26 @@ export const login = (user) => {
             ...user
         })
 
+        if(res.status === 200){
+            const { token ,user} = res.data;
+            localStorage.setItem('token',token);
+            dispatch({
+                type: authConstants.LOGIN_SUCCESS,
+                payload:{
+                    token,user
+                }
+            })
+        }else{
+            if(res.status === 400){
+                dispatch({
+                    type: authConstants.LOGIN_FAILURE,
+                    payload:{
+                        error:res.data.error
+                    }
+                })
+            }
+        }
+
         dispatch({type: authConstants.LOGIN_REQUEST,payload: {
             ...user
         }})
