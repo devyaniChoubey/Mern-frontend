@@ -6,12 +6,6 @@ import { addCategory, getAllCategory } from '../../actions/category.action';
 import { useSelector } from 'react-redux';
 import Input from '../../components/UI/Input';
 
-
-/**
-* @author
-* @function Category
-**/
-
 const Category = (props) => {
     const [show, setShow] = useState(false);
     const [categoryName, setCategoryName] = useState("");
@@ -19,19 +13,14 @@ const Category = (props) => {
     const [categoryImage, setCategoryImage] = useState("");
 
     const handleClose = () => {
-
         const form = new FormData();
         form.append('name', categoryName)
-        form.append('parentId', parentCategoryId)
+        form.append('parentid', parentCategoryId)
         form.append('categoryImage', categoryImage)
-        console.log(form)
+
+        console.log(form.get('name'))
         dispatch(addCategory(form))
-        const cat = {
-            categoryName,
-            categoryImage,
-            parentCategoryId
-        }
-         console.log(cat);
+
         setShow(false);
     }
     const handleShow = () => setShow(true);
