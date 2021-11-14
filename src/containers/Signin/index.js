@@ -1,9 +1,9 @@
 import Layout from '../../components/Layout/index'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap';
 import Input from '../../components/UI/Input';
-import {login} from '../../actions';
+import {isUserLoggedIn, login} from '../../actions';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router';
 
 const Signin = (props) => {
@@ -22,7 +22,6 @@ const Signin = (props) => {
             password
         }
         dispatch(login(user));
-        alert("loggedin")
     }
 
     if(auth.authenticate){

@@ -1,12 +1,12 @@
-import { Container } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
+import './index.css';
 import Layout from '../../components/Layout';
+import { NavLink } from 'react-router-dom';
 const Home = (props) => {
-    return(
-         <Layout>
-            <Container className="text-center" style={{margin : '5rem', background : '#fff'}}>
-                <h1>Welcome to admin dashboard</h1>
-            </Container>
-         </Layout>
+    return (
+        <Layout sidebar>
+            
+        </Layout>
     )
 }
 

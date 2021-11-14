@@ -1,4 +1,4 @@
-import { authConstants } from "./constants"
+import { authConstants } from "../actions/constants"
 
 const initialState = {
     token: null,
@@ -9,7 +9,10 @@ const initialState = {
         picture: ''
     },
     authenticate: false,
-    authenticating : false
+    authenticating : false,
+    loading: false,
+    error: null,
+    message: ""
 }
 
 export default (state = initialState, action) => {
@@ -28,6 +31,25 @@ export default (state = initialState, action) => {
                 token: action.payload.token,
                 authenticate: true,
                 authenticating: true
+            }
+            break;
+        case authConstants.LOGOUT_REQUEST:
+            state= {
+                ...state,
+                loading: true
+
+            }
+            break;
+        case authConstants.LOGOUT_SUCCESS:
+            state = {
+                ...state
+            }
+            break;
+        case authConstants.LOGIN_FAILURE:
+            state = {
+                ...state,
+                error: action.payload.error,
+                loading : false
             }
             break;
     }
