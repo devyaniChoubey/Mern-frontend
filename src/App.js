@@ -17,10 +17,21 @@ function App() {
   const dispatch = useDispatch();
   const auth = useSelector(state => state.auth);
 
+  // useEffect(() => {
+  //   if (!auth.authenticate) {
+  //     dispatch(isUserLoggedIn());
+  //   }
+  //   // dispatch(getAllCategory())
+  // }, [])
+
+  // useEffect(() => {
+  //   if (!auth.authenticate) {
+  //     dispatch(isUserLoggedIn());
+  //   }
+  // }, [])
+
+
   useEffect(() => {
-    if (!auth.authenticate) {
-      dispatch(isUserLoggedIn());
-    }
     dispatch(getAllCategory())
   }, [])
 

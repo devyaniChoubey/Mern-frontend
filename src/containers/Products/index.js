@@ -3,7 +3,7 @@ import Layout from '../../components/Layout';
 import { Modal, Button, Row, Col, Container } from 'react-bootstrap';
 import Input from '../../components/UI/Input';
 import { useDispatch, useSelector } from 'react-redux';
-import { addCategory } from '../../actions/category.action';
+import {addProduct} from "./../../actions/product.action"
 /**
 * @author
 * @function Products
@@ -29,10 +29,12 @@ const Products = (props) => {
     form.append('category',categoryId);
     console.log(form.get('name'))
     for(let pic of productPictures){
-      form.append('productPictures', pic);
+      form.append('productPicture', pic);
     }
 
-    dispatch(addCategory(form))
+    console.log(form.get("productPicture"))
+
+    dispatch(addProduct(form))
     setShow(false)
   }
   const handleShow = () => setShow(true);
