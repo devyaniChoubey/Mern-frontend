@@ -10,7 +10,7 @@ import { isUserLoggedIn } from './actions/auth.actions'
 import Products from './containers/Products';
 import Orders from './containers/Orders';
 import Category from './containers/Category';
-import { getAllCategory } from './actions';
+import { getAllCategory, getInitialData } from './actions';
 
 function App() {
 
@@ -21,7 +21,7 @@ function App() {
     if (!auth.authenticate) {
       dispatch(isUserLoggedIn());
     }
-    dispatch(getAllCategory())
+    dispatch(getInitialData())
   }, [])
 
   return (

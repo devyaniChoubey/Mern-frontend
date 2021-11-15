@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import Layout from '../../components/Layout';
-import { Modal, Button, Row, Col, Container } from 'react-bootstrap';
+import { Row, Col, Container,Table } from 'react-bootstrap';
 import Input from '../../components/UI/Input';
 import { useDispatch, useSelector } from 'react-redux';
 import { addCategory } from '../../actions/category.action';
+import Modal from '../../components/UI/Modal/index';
+
 /**
 * @author
 * @function Products
@@ -22,13 +24,13 @@ const Products = (props) => {
 
   const handleSubmit = () => {
     const form = new FormData();
-    form.append('name',name);
+    form.append('name', name);
     form.append('quantity', quantity);
-    form.append('price',price);
+    form.append('price', price);
     form.append('description', description);
-    form.append('category',categoryId);
+    form.append('category', categoryId);
     console.log(form.get('name'))
-    for(let pic of productPictures){
+    for (let pic of productPictures) {
       form.append('productPictures', pic);
     }
 
@@ -44,6 +46,52 @@ const Products = (props) => {
     ]);
   }
 
+
+  const renderProducts = () => {
+    return(
+      <Table responsive="sm">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Description</th>
+          <th>Category</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Table cell</td>
+          <td>Table cell</td>
+          <td>Table cell</td>
+          <td>Table cell</td>
+          <td>Table cell</td>
+          <td>Table cell</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Table cell</td>
+          <td>Table cell</td>
+          <td>Table cell</td>
+          <td>Table cell</td>
+          <td>Table cell</td>
+          <td>Table cell</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Table cell</td>
+          <td>Table cell</td>
+          <td>Table cell</td>
+          <td>Table cell</td>
+          <td>Table cell</td>
+          <td>Table cell</td>
+        </tr>
+      </tbody>
+    </Table>
+    )
+  }
 
 
   const createCategoryList = (categories, options = []) => {
@@ -68,36 +116,30 @@ const Products = (props) => {
             </div>
           </Col>
         </Row>
+        <Row>
+          <Col>
+           {renderProducts()}
+          </Col>
+        </Row>
 
       </Container>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add New Product</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Input label="Name" value={name} placeholder={'Product Name'} onChange={(e) => setName(e.target.value)} />
-          <Input label="Quantity" value={quantity} placeholder={'Product Quantity'} onChange={(e) => setQuantity(e.target.value)} />
-          <Input label="Price" value={price} placeholder={'Product Price'} onChange={(e) => setPrice(e.target.value)} />
-          <Input label="Description" value={description} placeholder={'Product Description'} onChange={(e) => setDescription(e.target.value)} />
-          <select className="form-control" value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
-            <option>Select category</option>
-            {
-              createCategoryList(category.categories).map(option => <option key={option.value} value={option.value}>{option.name}</option>)
-            }
-          </select>
+      <Modal show={show} handleChange={handleSubmit} modalTitle={'Add New Product'} handleClose={handleClose}>
+
+        <Input label="Name" value={name} placeholder={'Product Name'} onChange={(e) => setName(e.target.value)} />
+        <Input label="Quantity" value={quantity} placeholder={'Product Quantity'} onChange={(e) => setQuantity(e.target.value)} />
+        <Input label="Price" value={price} placeholder={'Product Price'} onChange={(e) => setPrice(e.target.value)} />
+        <Input label="Description" value={description} placeholder={'Product Description'} onChange={(e) => setDescription(e.target.value)} />
+        <select className="form-control" value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
+          <option>Select category</option>
           {
-            productPictures.length > 0 ? productPictures.map((pic, index) => <div key={index}>{pic.name} </div>) : null
+            createCategoryList(category.categories).map(option => <option key={option.value} value={option.value}>{option.name}</option>)
           }
-          <input type="file" name="productPictures" onChange={handleProductPictures} />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleSubmit}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
+        </select>
+        {
+          productPictures.length > 0 ? productPictures.map((pic, index) => <div key={index}>{pic.name} </div>) : null
+        }
+        <input type="file" name="productPictures" onChange={handleProductPictures} />
+
       </Modal>
     </Layout>
   )
