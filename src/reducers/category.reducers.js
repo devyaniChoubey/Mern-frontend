@@ -3,25 +3,81 @@ import { categoryConstants } from "../actions/constants"
 
 const initState = {
     categories: [],
-    loading : false,
+    loading: false,
     error: null
 }
 
-const buildNewCategories = (categories, category) => {
-    let myCategories  = [];
+// const buildNewCategories = (parentId, categories, category) => {
+//     let myCategories = [];
 
-    for(let cat of categories){
-        myCategories.push({
-            ...cat,
-            children: cat.children && cat.children.length > 0 ? buildNewCategories(cat.children, category) : []
-        })
+//     for (let cat of categories) {
+
+//         if (cat._id == parentId) {
+//             myCategories.push({
+//                 ...cat,
+//                 children: cat.children && cat.children.length > 0 ? buildNewCategories(parentId, [...cat.children, {
+//                     _id: category._id,
+//                     name: category.name,
+//                     slug: category.slug,
+//                     parentId: category.parentId,
+//                     children: category.children
+//                 }], category) : []
+//             })
+//         } else {
+//             myCategories.push({
+//                 ...cat,
+//                 children: cat.children && cat.children.length > 0 ? buildNewCategories(parentId, cat.children, category) : []
+//             })
+//         }
+
+//     }
+
+//     return myCategories;
+// }
+const buildNewCategories = (parentId, categories, category) => {
+    let myCategories = [];
+
+    if(parentId == undefined){
+        return [
+            ...categories,
+            {
+                _id: category._id,
+                name: category.name,
+                slug: category.slug,
+                children: []
+            }
+        ];
     }
+    
+    for(let cat of categories){
+
+        if(cat._id == parentId){
+            myCategories.push({
+                ...cat,
+                children: cat.children ? buildNewCategories(parentId, [...cat.children, {
+                    _id: category._id,
+                    name: category.name,
+                    slug: category.slug,
+                    parentId: category.parentId,
+                    children: category.children
+                }], category) : []
+            });
+        }else{
+            myCategories.push({
+                ...cat,
+                children: cat.children ? buildNewCategories(parentId, cat.children, category) : []
+            });
+        }
+
+        
+    }
+
 
     return myCategories;
 }
 
-export default (state = initState, action) =>{
-    switch(action.type){
+export default (state = initState, action) => {
+    switch (action.type) {
         case categoryConstants.GET_ALL_CATEGORIES_SUCCESS:
             state = {
                 ...state,
@@ -32,34 +88,35 @@ export default (state = initState, action) =>{
             state = {
                 ...state,
                 error: action.payload.error,
-                loading : false
+                loading: false
             }
             break;
         case categoryConstants.GET_ALL_CATEGORIES_REQUEST:
             state = {
                 ...state,
-                loading : true
+                loading: true
             }
             break;
         case categoryConstants.ADD_NEW_CATEGORY_REQUEST:
             state = {
                 ...state,
-                loading : true
+                loading: true
             }
             break;
         case categoryConstants.ADD_NEW_CATEGORY_SUCCESS:
-            const updatedCategories = buildNewCategories(state.categories, action.payload.category);
+            const category = action.payload.category;
+            const updatedCategories = buildNewCategories(category.parentId, state.categories, category);
             console.log(updatedCategories);
             state = {
                 ...state,
-                loading : false
-
+                categories: updatedCategories,
+                loading: false
             }
             break;
         case categoryConstants.ADD_NEW_CATEGORY_FAILURE:
-            state={
-               ...state,
-               loading : false
+            state = {
+                ...state,
+                loading: false
             }
             break;
     }
