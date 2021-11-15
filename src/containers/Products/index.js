@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import Layout from '../../components/Layout';
-import { Row, Col, Container,Table } from 'react-bootstrap';
+import { Row, Col, Container, Table } from 'react-bootstrap';
 import Input from '../../components/UI/Input';
 import { useDispatch, useSelector } from 'react-redux';
 import { addCategory } from '../../actions/category.action';
 import Modal from '../../components/UI/Modal/index';
 import { addProduct } from '../../actions';
-
-import {addProduct} from "./../../actions/product.action"
+import './index.css';
+import { generatePublicUrl } from '../../urlConfig';
+//import {addProduct} from "./../../actions/product.action"
 /**
 * @author
 * @function Products
@@ -21,7 +22,10 @@ const Products = (props) => {
   const [description, setDescription] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const [productPictures, setProductPictures] = useState('');
+  const [productDetailModal, setProductDetailModal] = useState(false);
+  const [productDetails, setProductDetails] = useState(null);
   const category = useSelector(state => state.category);
+  const product = useSelector(state => state.product);
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
@@ -32,7 +36,7 @@ const Products = (props) => {
     form.append('description', description);
     form.append('category', categoryId);
     console.log(form.get('name'))
-    for(let pic of productPictures){
+    for (let pic of productPictures) {
       form.append('productPicture', pic);
     }
 
@@ -41,8 +45,11 @@ const Products = (props) => {
     dispatch(addProduct(form))
     setShow(false)
   }
+
+
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
+
   const handleProductPictures = (e) => {
     setProductPictures([
       ...productPictures,
@@ -50,83 +57,99 @@ const Products = (props) => {
     ]);
   }
 
+  const showProductDetailsModal = (product) => {
+    setProductDetails(product);
+    setProductDetailModal(true);
+    console.log(product);
+  }
+
 
   const renderProducts = () => {
-    return(
-      <Table responsive="sm">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Price</th>
-          <th>Quantity</th>
-          <th>Description</th>
-          <th>Category</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>Table cell</td>
-          <td>Table cell</td>
-          <td>Table cell</td>
-          <td>Table cell</td>
-          <td>Table cell</td>
-          <td>Table cell</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Table cell</td>
-          <td>Table cell</td>
-          <td>Table cell</td>
-          <td>Table cell</td>
-          <td>Table cell</td>
-          <td>Table cell</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>Table cell</td>
-          <td>Table cell</td>
-          <td>Table cell</td>
-          <td>Table cell</td>
-          <td>Table cell</td>
-          <td>Table cell</td>
-        </tr>
-      </tbody>
-    </Table>
+    return (
+      <Table style={{ fontSize: 12 }} responsive="sm">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Description</th>
+            <th>Category</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            product.products.length > 0 ? product.products.map(product => (<tr key={product._id} onClick={() => showProductDetailsModal(product)}>
+              <td >1</td>
+              <td>{product.name}</td>
+              <td>{product.price}</td>
+              <td>{product.quantity}</td>
+              <td>{product.description}</td>
+              <td>{product.category.name}</td>
+            </tr>)) : null
+          }
+
+
+        </tbody>
+      </Table>
     )
   }
 
 
-  const createCategoryList = (categories, options = []) => {
-    for (let category of categories) {
-      options.push({ value: category._id, name: category.name })
-      if (category.children.length > 0) {
-        createCategoryList(category.children, options)
-      }
-    }
-    return options;
+  const handleCloseProductDetailModal = () => {
+    setProductDetailModal(false);
   }
 
-  console.log(productPictures)
-  return (
-    <Layout sidebar>
-      <Container>
+  const renderProductDetailsModal = () => {
+
+    if (!productDetails) return null
+    return (
+      <Modal show={productDetailModal} handleClose={handleCloseProductDetailModal} size="lg" modalTitle={'Product Details'}>
         <Row>
-          <Col md={12}>
-            <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-              <h3>Product</h3>
-              <button variant="primary" onClick={handleShow}>Add</button>
-            </div>
+          <Col md="6">
+            <label className="key">Name</label>
+            <p className="value">{productDetails.name}</p>
+          </Col>
+          <Col md="6">
+            <label className="key">Price</label>
+            <p className="value">{productDetails.price}</p>
+          </Col>
+        </Row>
+        <Row>
+          <Col md="6">
+            <label className="key">Quantity</label>
+            <p className="value">{productDetails.quantity}</p>
+          </Col>
+          <Col md="6">
+            <label className="key">Categories</label>
+            <p className="value">{productDetails.category.name}</p>
+          </Col>
+        </Row>
+        <Row>
+          <Col md="12">
+            <label className="key">Description</label>
+            <p className="value">{productDetails.description}</p>
           </Col>
         </Row>
         <Row>
           <Col>
-           {renderProducts()}
+            <label className="key">Product Pictures</label>
+            <div style={{ display: 'flex' }}>
+              {productDetails.productPictures.map(picture =>
+                <div className="productImgContainer">
+                  <img src={generatePublicUrl(picture.img)} />
+                </div>
+              )}
+            </div>
+
           </Col>
         </Row>
+      </Modal>
+    )
+  }
 
-      </Container>
+  const renderAddProductModal = () => {
+    return (
       <Modal show={show} handleChange={handleSubmit} modalTitle={'Add New Product'} handleClose={handleClose}>
 
         <Input label="Name" value={name} placeholder={'Product Name'} onChange={(e) => setName(e.target.value)} />
@@ -145,6 +168,46 @@ const Products = (props) => {
         <input type="file" name="productPictures" onChange={handleProductPictures} />
 
       </Modal>
+    )
+  }
+
+
+  const createCategoryList = (categories, options = []) => {
+    for (let category of categories) {
+      options.push({ value: category._id, name: category.name })
+      if (category.children.length > 0) {
+        createCategoryList(category.children, options)
+      }
+    }
+    return options;
+  }
+
+
+
+
+
+
+
+  return (
+    <Layout sidebar>
+      <Container>
+        <Row>
+          <Col md={12}>
+            <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+              <h3>Product</h3>
+              <button variant="primary" onClick={handleShow}>Add</button>
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            {renderProducts()}
+          </Col>
+        </Row>
+
+      </Container>
+      {renderAddProductModal()}
+      {renderProductDetailsModal()}
     </Layout>
   )
 
