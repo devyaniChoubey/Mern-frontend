@@ -7,6 +7,7 @@ import { addCategory } from '../../actions/category.action';
 import Modal from '../../components/UI/Modal/index';
 import { addProduct } from '../../actions';
 
+import {addProduct} from "./../../actions/product.action"
 /**
 * @author
 * @function Products
@@ -31,9 +32,11 @@ const Products = (props) => {
     form.append('description', description);
     form.append('category', categoryId);
     console.log(form.get('name'))
-    for (let pic of productPictures) {
-      form.append('productPictures', pic);
+    for(let pic of productPictures){
+      form.append('productPicture', pic);
     }
+
+    console.log(form.get("productPicture"))
 
     dispatch(addProduct(form))
     setShow(false)

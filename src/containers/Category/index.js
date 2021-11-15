@@ -6,12 +6,19 @@ import { addCategory } from '../../actions/category.action';
 import { useSelector } from 'react-redux';
 import Input from '../../components/UI/Input';
 import Modal from '../../components/UI/Modal/index';
+import {getAllCategory} from "../../actions/category.action";
 
 const Category = (props) => {
     const [show, setShow] = useState(false);
     const [categoryName, setCategoryName] = useState("");
     const [parentCategoryId, setParentCategoryId] = useState("");
     const [categoryImage, setCategoryImage] = useState("");
+
+
+
+    // useEffect(() => {
+    //     dispatch(getAllCategory())
+    // }, [])
 
     const handleChange = () => {
         const form = new FormData();
@@ -26,6 +33,10 @@ const Category = (props) => {
     const handleShow = () => setShow(true);
     const category = useSelector(state => state.category);
     const dispatch = useDispatch();
+
+
+    console.log("Category is")
+    console.log(JSON.stringify(category))
 
     const renderCategories = (categories) => {
         let categorie = [];
@@ -60,7 +71,9 @@ const Category = (props) => {
     }
 
     return (
-        <Layout sidebar>
+
+        <Layout sidebar >
+            {/*<p>Test</p>*/}
             <Container>
                 <Row>
                     <Col md={12}>
