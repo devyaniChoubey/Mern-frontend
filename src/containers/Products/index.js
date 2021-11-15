@@ -5,6 +5,7 @@ import Input from '../../components/UI/Input';
 import { useDispatch, useSelector } from 'react-redux';
 import { addCategory } from '../../actions/category.action';
 import Modal from '../../components/UI/Modal/index';
+import { addProduct } from '../../actions';
 
 /**
 * @author
@@ -34,7 +35,7 @@ const Products = (props) => {
       form.append('productPictures', pic);
     }
 
-    dispatch(addCategory(form))
+    dispatch(addProduct(form))
     setShow(false)
   }
   const handleShow = () => setShow(true);
