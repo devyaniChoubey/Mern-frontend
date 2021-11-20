@@ -45,7 +45,7 @@ const NewPage = (props) => {
         console.log('category', category);
         setCategories(linearCategories(category.categories))
         console.log('categories', categories);
-    }, [category])
+    }, [])
 
 
     const submitPageForm = () =>{
@@ -57,8 +57,9 @@ const NewPage = (props) => {
         const form= new FormData();
         form.append('title',title);
         form.append('description',desc);
-        form.append('category',category);
+        form.append('category',categoryId);
         form.append('type',type);
+        console.log(form.get('category'))
 
         banners.forEach((banner,index) => {
             form.append("banners",banner);
