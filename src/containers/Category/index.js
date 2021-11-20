@@ -34,9 +34,20 @@ const Category = (props) => {
     const [expandedArray, setExpandedArray] = useState([]);
     const [updateCategoryModal, setUpdateCategoryModal] = useState(false);
     const [deleteCategoryModal, setDeleteCategoryModal] = useState(false);
+    const category = useSelector(state => state.category);
+    useEffect(() => {
+        if (!category.loading) {
+            setShow(false)
+        }
+    }, [category.loading])
 
     const handleChange = () => {
         const form = new FormData();
+        if (categoryName === "") {
+            alert("Category name is required")
+            setShow(false)
+            return;
+        }
         form.append('name', categoryName)
         form.append('parentId', parentCategoryId)
         form.append('categoryImage', categoryImage)
@@ -49,7 +60,7 @@ const Category = (props) => {
     }
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const category = useSelector(state => state.category);
+    
     const dispatch = useDispatch();
 
 
@@ -161,7 +172,7 @@ const Category = (props) => {
                 .then(result => {
                     if (result) {
                         dispatch(getAllCategory())
-                        
+
                     }
                 })
         }
@@ -208,9 +219,9 @@ const Category = (props) => {
                             <h3>Category</h3>
                             <div className="actionBtnContainer">
                                 <span>Actions: </span>
-                                <button variant="primary" onClick={() => setShow(true)}><IoIosAdd/><span>Add</span></button>
-                                <button onClick={updateCategory}><IoIosCloudUpload/><span>Edit</span></button>
-                                <button onClick={deleteCategory}><IoIosTrash/><span>Delete</span></button>
+                                <button variant="primary" onClick={() => setShow(true)}><IoIosAdd /><span>Add</span></button>
+                                <button onClick={updateCategory}><IoIosCloudUpload /><span>Edit</span></button>
+                                <button onClick={deleteCategory}><IoIosTrash /><span>Delete</span></button>
                             </div>
 
                         </div>
