@@ -8,12 +8,19 @@ const NewModal = (props) => {
                     <Modal.Title>{props.modalTitle}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                   {props.children}
+                    {props.children}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary" onClick={props.handleChange}>
-                        Save Changes
-                    </Button>
+                    {
+                        props.buttons ? props.buttons.map((btn, index) => (
+                            <Button key={index} variant={btn.color} onClick={btn.onClick}>
+                                {btn.label}
+                            </Button>
+                        )) : <Button {...props} style={{backgroundColor:"#333"}} className="btn-sm" variant="primary" onClick={props.handleChange}>
+                            Save
+                        </Button>
+                    }
+
                 </Modal.Footer>
             </Modal>
         </div>
