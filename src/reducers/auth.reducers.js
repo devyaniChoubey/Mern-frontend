@@ -42,7 +42,10 @@ export default (state = initialState, action) => {
             break;
         case authConstants.LOGOUT_SUCCESS:
             state = {
-                ...state
+                ...state,
+                token:null,
+                authenticate: false,
+                authenticating: false
             }
             break;
         case authConstants.LOGIN_FAILURE:
