@@ -17,17 +17,26 @@ const Signup = (props) => {
 
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        if (!user.loading) {
+            setFirstName("")
+            setLastName("")
+            setEmail("")
+            setPassword("")
+        }
+    }, [user.loading])
+
 
     const auth = useSelector(state => state.auth)
     const user = useSelector(state => state.user)
 
-    
+
     if (auth.authenticate) {
         return <Navigate to={'/'} />
     }
-    
 
-    if(user.loading){
+
+    if (user.loading) {
         return <p>Loading...</p>
     }
 
@@ -55,7 +64,7 @@ const Signup = (props) => {
                                 <Input label="Email" placeholder="Email" value={email} type="email" onChange={(e) => setEmail(e.target.value)} />
                                 <Input label="Password" placeholder="Password" value={password} type="password" onChange={(e) => setPassword(e.target.value)} />
                             </Row>
-                            <Button variant="primary" type="submit">
+                            <Button variant="primary" className="materialButton" type="submit">
                                 Submit
                             </Button>
                         </Form>

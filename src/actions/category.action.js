@@ -8,7 +8,6 @@ export const getAllCategory = () => {
 
         dispatch({ type: categoryConstants.GET_ALL_CATEGORIES_REQUEST })
         const res = await axiosInstance.get('/category/getcategory');
-        console.log(res.data);
         if (res.status === 200) {
             const { categoryList } = res.data;
             dispatch({
@@ -30,7 +29,6 @@ export const addCategory = (form) => {
         dispatch({ type: categoryConstants.ADD_NEW_CATEGORY_REQUEST })
         try {
             const res = await axiosAdminInstance.post('/category/create', form);
-            console.log(res.data);
             if (res.status === 201) {
                 dispatch({
                     type: categoryConstants.ADD_NEW_CATEGORY_SUCCESS,

@@ -51,9 +51,6 @@ const Category = (props) => {
         form.append('name', categoryName)
         form.append('parentId', parentCategoryId)
         form.append('categoryImage', categoryImage)
-        console.log(form.get('name'))
-        console.log(form.get('parentId'))
-        console.log(form.get('categoryImage'))
         dispatch(addCategory(form))
 
         setShow(false);
@@ -63,9 +60,6 @@ const Category = (props) => {
     
     const dispatch = useDispatch();
 
-
-    console.log("Category is")
-    console.log(JSON.stringify(category))
 
     const renderCategories = (categories) => {
         let categorie = [];
@@ -103,7 +97,6 @@ const Category = (props) => {
     }
 
     const handleChange1 = (e) => {
-        console.log(e.target.value);
         setParentCategoryId(e.target.value);
     }
 
@@ -155,7 +148,6 @@ const Category = (props) => {
             form.append('name', item.name);
             form.append('parentId', item.parentId ? item.parentId : "")
             form.append('type', item.type)
-            console.log(form.get('name'))
         })
         dispatch(updateCategories(form))
         setUpdateCategoryModal(false);

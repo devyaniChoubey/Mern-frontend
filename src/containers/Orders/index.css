@@ -1,0 +1,54 @@
+
+
+
+.orderTrack{
+    width: 400px;
+    display: flex;
+}
+.orderStatus{
+    width: 33.33%;
+    height: 3px;
+    background: #777;
+    position: relative;
+    font-size: 12px;
+}
+.orderStatus.active{
+    background: #26A541;
+}
+.orderStatus:last-child{
+    width: 0;
+}
+.orderStatus .point{
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    border-radius: 5px;
+    background-color: #777;
+    top: -3px;
+}
+.orderStatus .point.active{
+    background-color: #26A541;
+}
+.orderInfo{
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: absolute;
+    top: -26px;
+    transform: translateX(-50%);
+}
+
+.delItemName{
+    font-size: 12px;
+}
+
+.orderInfo .status{
+    color: #26A541;
+    text-transform: capitalize;
+    font-weight: bold;
+}
+
+.orderInfo .date{
+    font-size: 10px;
+}

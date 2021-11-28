@@ -28,11 +28,9 @@ const NewPage = (props) => {
 
 
     const handleBannerImages = (e) => {
-        console.log(e);
         setBanners([...banners, e.target.files[0]])
     }
     const handleProductImages = (e) => {
-        console.log(e);
         setProducts([...products, e.target.files[0]])
     }
 
@@ -44,9 +42,7 @@ const NewPage = (props) => {
 
 
     useEffect(() => {
-        console.log('category', category);
         setCategories(linearCategories(category.categories))
-        console.log('categories', categories);
     }, [])
 
 
@@ -59,7 +55,6 @@ const NewPage = (props) => {
             setProducts([]);
             setBanners([]);
         }
-        console.log(page)
     }, [page])
 
 
@@ -74,7 +69,6 @@ const NewPage = (props) => {
         form.append('description',desc);
         form.append('category',categoryId);
         form.append('type',type);
-        console.log(form.get('category'))
 
         banners.forEach((banner,index) => {
             form.append("banners",banner);

@@ -5,7 +5,7 @@ import Input from '../../components/UI/Input';
 import { useDispatch, useSelector } from 'react-redux';
 import { addCategory } from '../../actions/category.action';
 import Modal from '../../components/UI/Modal/index';
-import { addProduct } from '../../actions';
+import { addProduct, deleteProductById } from '../../actions';
 import './index.css';
 import { generatePublicUrl } from '../../urlConfig';
 //import {addProduct} from "./../../actions/product.action"
@@ -35,12 +35,10 @@ const Products = (props) => {
     form.append('price', price);
     form.append('description', description);
     form.append('category', categoryId);
-    console.log(form.get('name'))
     for (let pic of productPictures) {
       form.append('productPicture', pic);
     }
 
-    console.log(form.get("productPicture"))
 
     dispatch(addProduct(form))
     setShow(false)
@@ -60,7 +58,6 @@ const Products = (props) => {
   const showProductDetailsModal = (product) => {
     setProductDetails(product);
     setProductDetailModal(true);
-    console.log(product);
   }
 
 
@@ -79,13 +76,19 @@ const Products = (props) => {
         </thead>
         <tbody>
           {
-            product.products.length > 0 ? product.products.map(product => (<tr key={product._id} onClick={() => showProductDetailsModal(product)}>
+            product.products.length > 0 ? product.products.map(product => (<tr key={product._id}>
               <td >1</td>
               <td>{product.name}</td>
               <td>{product.price}</td>
               <td>{product.quantity}</td>
               <td>{product.description}</td>
-              <td>{product.category.name}</td>
+              <td>{product.category && product.category.name}</td>
+              <td>
+              <button onClick={() => showProductDetailsModal(product)}>info</button>
+              <button onClick={() => {
+                const payload ={productId : product._id	}   
+                dispatch(deleteProductById(payload))
+              }}>Del</button></td>
             </tr>)) : null
           }
 
@@ -122,7 +125,7 @@ const Products = (props) => {
           </Col>
           <Col md="6">
             <label className="key">Categories</label>
-            <p className="value">{productDetails.category.name}</p>
+            <p className="value">{productDetails.category && productDetails.category.name}</p>
           </Col>
         </Row>
         <Row>
